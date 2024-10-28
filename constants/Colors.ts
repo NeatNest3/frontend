@@ -23,4 +23,9 @@ export const Colors = {
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
   },
+  PRIM_GREEN: '#55B47D',
+  PRIM_DARKGREEN: '#328651',
+  PRIM_GOLD: '#E1A926',
+  PRIM_DARK: '#2D333C'
+
 };
