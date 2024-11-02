@@ -24,12 +24,14 @@ export default function Header() {
           }} />
           <View>
             <Text style={{
-              fontSize:20
+              fontSize:20,
+              fontFamily:'Playfair'
             }}>
               Account Name:
             </Text>
             <Text style={{
-              fontSize: 35
+              fontSize: 35,
+              fontFamily:'Playfair-Bold'
             }}>
               Jane Doe
             </Text>

@@ -38,3 +38,10 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+## Font Used 
+
+https://fonts.google.com/specimen/Playfair/license?preview.text=Welcome%20to%20Neat%20Nest,%20Your%20home%20to%20get%20things%20done&preview.size=73
+
+Playfair Designed by Claus Eggers Sorensen
