@@ -5,8 +5,8 @@ import {Colors} from './../../constants/Colors'
 export default function Header() {
   return (
     <View style={{
-      padding:20,
-      paddingTop:30,
+      padding:10,
+      paddingTop:40,
       backgroundColor:Colors.PRIM_DARKGREEN,
       borderBottomWidth: 1,
       }}>
@@ -18,8 +18,8 @@ export default function Header() {
         
       }}>
           <Image source={require('./../../assets/images/TransNoText.png')} style={{
-            width:120,
-            height:120,
+            width:70,
+            height:70,
             borderRadius:99,
           }} />
           <View>
