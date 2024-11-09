@@ -12,7 +12,8 @@ import CalendarPicker from "react-native-calendar-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { CheckBox } from "react-native-elements";
 import { Colors } from "../../constants/Colors";
-import { useRouter } from "expo-router"; 
+import { useGlobalParams } from "../../context/GlobalParamsContext";
+import { useRouter } from "expo-router";
 
 const roomsList = [
   {
@@ -53,7 +54,9 @@ const NewCleanForm = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedRooms, setSelectedRooms] = useState([]);
 
-  const router = useRouter(); 
+  const router = useRouter()
+
+  const { updateGlobalParams } = useGlobalParams(); 
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -87,12 +90,18 @@ const NewCleanForm = () => {
 
   const handleBookAppointment = () => {
     console.log('Filtering Cleans by', selectedRooms)
+    updateGlobalParams({
+      date: selectedDate ? selectedDate.toISOString() : null,
+      time: selectedTime ? formatTime(selectedTime) : null,
+      rooms: selectedRooms,
+    });
+
     router.push({
-      pathname: "/filteredClean/filteredCleaners",
-      params: {
+      pathname: "/filteredClean/filteredCleaners",  // Navigate to the filtered page
+      query: {
         date: selectedDate ? selectedDate.toISOString() : null,
         time: selectedTime ? formatTime(selectedTime) : null,
-        rooms: selectedRooms,
+        rooms: selectedRooms.join(","), // Convert rooms array to a comma-separated string
       },
     });
   };

@@ -1,0 +1,85 @@
+[
+  {
+    "id": "1",
+    "name": "Cleaner 1",
+    "preferred_rooms": ["kitchen", "bathroom"],
+    "bio": "Lorem ipsum odor amet, consectetuer adipiscing elit. Fringilla curabitur morbi integer etiam lacus lobortis. ",
+    "image": "https://picsum.photos/201",
+    "city": "Boston",
+    "state": "MA",
+    "rating": 4.8,
+    "specialties": [
+      {
+        "name": "Super Sweeper",
+        "image": "https://picsum.photos/20"
+      },
+      {
+        "name": "Power Polisher",
+        "image": "https://picsum.photos/20"
+      },
+      {
+        "name": "Dust Devil",
+        "image": "https://picsum.photos/20"
+      }
+    ],
+    "pet_friendly": ["cats", "dogs"]  
+  },
+  {
+    "id": "2",
+    "name": "Cleaner 2",
+    "preferred_rooms": ["living_room", "laundry"],
+    "bio": "Euismod aliquam tellus dignissim; tortor tristique enim.",
+    "image": "https://picsum.photos/200",
+    "city": "Jamestown",
+    "state": "VA",
+    "rating": 4.7,
+    "specialties": [
+      {
+        "name": "Super Sweeper",
+        "image": "https://picsum.photos/200"
+      },
+      {
+        "name": "Power Polisher",
+        "image": "https://picsum.photos/20"
+      },
+      {
+        "name": "Crust Buster",
+        "image": "https://picsum.photos/20"
+      },
+      {
+        "name": "Speed Scrubber",
+        "image": "https://picsum.photos/20"
+      },
+      {
+        "name": "Dust Devil",
+        "image": "https://picsum.photos/20"
+      }
+    ],
+    "pet_friendly": false  
+  },
+  {
+    "id": "3",
+    "name": "Cleaner 3",
+    "preferred_rooms": ["bedroom", "other"],
+    "bio": "Ligula quisque ultricies imperdiet proin, ad dapibus. Fermentum tempor auctor suspendisse.",
+    "image": "https://picsum.photos/199",
+    "city": "Boulder",
+    "state": "CO",
+    "rating": 4.9,
+    "specialties": [
+      {
+        "name": "Super Sweeper",
+        "image": "https://picsum.photos/20"
+      },
+      {
+        "name": "Power Polisher",
+        "image": "https://picsum.photos/20"
+      },
+      {
+        "name": "Dust Devil",
+        "image": "https://picsum.photos/20"
+      }
+    ],
+    "pet_friendly": ["cats", "birds"]  
+  }
+]
