@@ -1,0 +1,27 @@
+[
+    {
+      "id": 1,
+      "customerId": 1,
+      "homeName": "Elm Street House",
+      "address": "123 Elm St",
+      "city": "Springfield",
+      "state": "IL",
+      "zip": "62704",
+      "homeType": "Home",
+      "outdoorPicture": "https://via.placeholder.com/150", 
+      "pets": "Yes"
+    },
+
+    {
+      "id": 2,
+      "customerId": 2,
+      "homeName": "City Apartment",
+      "address": "456 Oak Ave",
+      "city": "Chicago",
+      "state": "IL",
+      "zip": "60601",
+      "homeType": "Apartment",
+      "outdoorPicture": "https://via.placeholder.com/150", 
+      "pets": "No"
+    }
+  ]
