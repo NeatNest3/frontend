@@ -57,9 +57,13 @@ const FilteredCleaners = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: "Filtered Cleaners",
-      headerShown: false,
-      headerBackTitle: "Back to Filter",
+      headerTitle: " ",
+      headerShown: true,
+      headerBackTitle: "Reselect Date",
+      headerTintColor:Colors.PRIM_DARK,
+      headerStyle: {
+        backgroundColor:Colors.PRIM_DARKGREEN,
+      }
     });
   }, [navigation]);
 
@@ -77,7 +81,6 @@ const FilteredCleaners = () => {
 
   return (
     <View>
-      <Header />
       <ScrollView style={styles.container}>
         <View style={{borderBottomWidth:.5 }}>
         <Text style={styles.heading}>Filtered Cleaners</Text>          
