@@ -5,7 +5,7 @@ import { GlobalParamsProvider } from './../context/GlobalParamsContext'
 
 export default function RootLayout() {
   useFonts({
-    Playfair: require("./../assets/fonts/Playfair_9pt-Regular.ttf"),
+    "Playfair": require("./../assets/fonts/Playfair_9pt-Regular.ttf"),
     "Playfair-Light": require("./../assets/fonts/Playfair_9pt-Light.ttf"),
     "Playfair-Bold": require("./../assets/fonts/Playfair_9pt-Bold.ttf"),
   });

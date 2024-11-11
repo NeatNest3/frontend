@@ -3,6 +3,7 @@ import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import Heading from './../../components/Home/Heading'
 import HomeCalendar from './../../components/Home/Calendar'
+import History from '../../components/Home/History'
 
 export default function home() {
   return (
@@ -10,6 +11,7 @@ export default function home() {
       <StatusBar style="dark"/>
       <Heading />
       <HomeCalendar />
+      <History/>
     </View>
   )
 }
