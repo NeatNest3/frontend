@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
+import { logOut } from "../../firebase/firebaseAuth";
 
 export default function MainBody() {
   const router = useRouter();
@@ -36,12 +37,17 @@ export default function MainBody() {
       name: "Customer Service",
       path: "/cs/custServ",
     },
-    {
-      id: 5,
-      name: "Logout",
-      path: "",
-    },
   ];
+
+  const handleLogout = async() => {
+    try {
+      await logOut();
+      router.replace('LoginScreen');
+    }
+    catch (error) {
+      console.error("Logout Failed", error)
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -56,6 +62,9 @@ export default function MainBody() {
           </TouchableOpacity>
         )}
       />
+      <TouchableOpacity style={styles.touchables} onPress={handleLogout}>
+        <Text style={styles.texts}>Log Out</Text>
+      </TouchableOpacity>
     </View>
   );
 }
