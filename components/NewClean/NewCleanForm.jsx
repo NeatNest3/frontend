@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  ScrollView,
   Image,
   FlatList,
 } from "react-native";
@@ -16,36 +15,12 @@ import { useGlobalParams } from "../../context/GlobalParamsContext";
 import { useRouter } from "expo-router";
 
 const roomsList = [
-  {
-    id: "kitchen",
-    name: "Kitchen",
-    image: require("./../../assets/images/kitchen.gif"),
-  },
-  {
-    id: "bathroom",
-    name: "Bathroom",
-    image: require("./../../assets/images/bathroom.gif"),
-  },
-  {
-    id: "bedroom",
-    name: "Bedroom",
-    image: require("./../../assets/images/bed.gif"),
-  },
-  {
-    id: "living_room",
-    name: "Living Room",
-    image: require("./../../assets/images/livingroom.gif"),
-  },
-  {
-    id: "laundry",
-    name: "Laundry",
-    image: require("./../../assets/images/laundry.gif"),
-  },
-  {
-    id: "other",
-    name: "Other",
-    image: require("./../../assets/images/bed.gif"),
-  },
+  { id: "kitchen", name: "Kitchen", image: require("./../../assets/images/kitchen.gif") },
+  { id: "bathroom", name: "Bathroom", image: require("./../../assets/images/bathroom.gif") },
+  { id: "bedroom", name: "Bedroom", image: require("./../../assets/images/bed.gif") },
+  { id: "living_room", name: "Living Room", image: require("./../../assets/images/livingroom.gif") },
+  { id: "laundry", name: "Laundry", image: require("./../../assets/images/laundry.gif") },
+  { id: "other", name: "Other", image: require("./../../assets/images/bed.gif") },
 ];
 
 const NewCleanForm = () => {
@@ -54,22 +29,24 @@ const NewCleanForm = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedRooms, setSelectedRooms] = useState([]);
 
-  const router = useRouter()
+  const router = useRouter();
+  const { updateGlobalParams } = useGlobalParams();
 
-  const { updateGlobalParams } = useGlobalParams(); 
-
+  // Handle Date Change: Trigger Time Picker when a date is selected
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    setShowTimePicker(true);
+    setShowTimePicker(true);  // Show time picker after selecting a date
   };
 
+  // Handle Time Change: Update selected time and hide the picker
   const handleTimeChange = (event, date) => {
-    setShowTimePicker(false);
-    if (date) {
+    if (event.type === 'set' && date) {
       setSelectedTime(date);
     }
+    setShowTimePicker(false); // Hide the time picker after selection
   };
 
+  // Handle Room Selection Toggle
   const handleRoomToggle = (roomId) => {
     setSelectedRooms((prevSelectedRooms) =>
       prevSelectedRooms.includes(roomId)
@@ -78,18 +55,25 @@ const NewCleanForm = () => {
     );
   };
 
-  const formatTime = (date) => {                // Change time to not be Military
+  const formatTime = (date) => {
     if (!date) return "";
     let hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, "0");
     const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12;                         // Convert to 12-hour format
-    hours = hours ? hours : 12;                 // Adjust '0' to '12'
+    hours = hours % 12;
+    hours = hours ? hours : 12;
     return `${hours}:${minutes} ${ampm}`;
   };
 
+  useEffect(() => {
+    // Automatically hide time picker after date/time are both selected
+    if (selectedDate && selectedTime) {
+      setShowTimePicker(false);
+    }
+  }, [selectedDate, selectedTime]);
+
   const handleBookAppointment = () => {
-    console.log('Filtering Cleans by', selectedRooms)
+    console.log('Filtering Cleans by', selectedRooms);
     updateGlobalParams({
       date: selectedDate ? selectedDate.toISOString() : null,
       time: selectedTime ? formatTime(selectedTime) : null,
@@ -97,17 +81,17 @@ const NewCleanForm = () => {
     });
 
     router.push({
-      pathname: "/filteredClean/filteredCleaners",  // Navigate to the filtered page
+      pathname: "/filteredClean/filteredCleaners",
       query: {
         date: selectedDate ? selectedDate.toISOString() : null,
         time: selectedTime ? formatTime(selectedTime) : null,
-        rooms: selectedRooms.join(","), // Convert rooms array to a comma-separated string
+        rooms: selectedRooms.join(","),
       },
     });
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={{ paddingBottom: 15, borderBottomWidth: 0.5 }}>
         <Text style={styles.headingText}>Book a Clean</Text>
       </View>
@@ -122,46 +106,29 @@ const NewCleanForm = () => {
         todayBackgroundColor="transparent"
       />
       {selectedDate && (
-        <View
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 40,
-            flex: 1,
-            padding: 10,
-          }}
-        >
-          <Text style={styles.selectedDate}>
-            Selected Date: {selectedDate.toLocaleDateString()}
-          </Text>
+        <View style={styles.selectedDateContainer}>
+          <Text style={styles.selectedDate}>Selected Date: {selectedDate.toLocaleDateString()}</Text>
         </View>
       )}
 
-      <View>
-        <Text style={styles.selectText}>Select a Time:</Text>
-      </View>
-      <DateTimePicker
-        value={selectedTime || new Date()}
-        mode="time"
-        display="spinner"
-        onChange={handleTimeChange}
-        textColor="black"
-      />
+      {showTimePicker && (
+        <>
+          <View>
+            <Text style={styles.selectText}>Select a Time:</Text>
+          </View>
+          <DateTimePicker
+            value={selectedTime || new Date()}
+            mode="time"
+            display="default"
+            onChange={handleTimeChange}
+            textColor="black"
+          />
+        </>
+      )}
+
       {selectedTime && (
-        <View
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 40,
-            flex: 1,
-            padding: 10,
-          }}
-        >
-          <Text style={styles.selectedTime}>
-            Selected Time: {formatTime(selectedTime)}
-          </Text>
+        <View style={styles.selectedTimeContainer}>
+          <Text style={styles.selectedTime}>Selected Time: {formatTime(selectedTime)}</Text>
         </View>
       )}
 
@@ -182,18 +149,15 @@ const NewCleanForm = () => {
             />
           </View>
         )}
-        keyExtractor={(item) => item.id} // Added keyExtractor for better performance
+        keyExtractor={(item) => item.id}
       />
 
       {selectedDate && selectedTime && (
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleBookAppointment}
-        >
+        <TouchableOpacity style={styles.button} onPress={handleBookAppointment}>
           <Text style={styles.buttonText}>Filter your Search</Text>
         </TouchableOpacity>
       )}
-    </ScrollView>
+    </View>
   );
 };
 
@@ -211,23 +175,37 @@ const styles = StyleSheet.create({
     fontFamily: "Playfair-Bold",
     fontSize: 24,
   },
+  selectedDateContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 40,
+    flex: 1,
+    padding: 10,
+  },
   selectedDate: {
     marginTop: 20,
     fontSize: 18,
     fontFamily: "Playfair-Bold",
-    marginTop: 0,
     color: Colors.PRIM_DARKGREEN,
   },
   calendarText: {
     fontFamily: "Playfair",
     fontSize: 16,
   },
+  selectedTimeContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 40,
+    flex: 1,
+    padding: 10,
+  },
   selectedTime: {
     marginTop: 20,
     fontSize: 18,
     fontFamily: "Playfair-Bold",
     textAlign: "center",
-    marginTop: 0,
     color: Colors.PRIM_DARKGREEN,
   },
   roomsTitle: {

@@ -16,7 +16,7 @@ import {
   Keyboard,
 } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import { useGlobalParams } from "../../context/GlobalParamsContext";
+import { useGlobalParams, clearGlobalParams } from "../../context/GlobalParamsContext";
 import cleanersData from "../../assets/data/cleaners.json";
 import { useRouter } from "expo-router";
 import { useNavigation } from "expo-router";
@@ -24,18 +24,17 @@ import { Colors } from "../../constants/Colors";
 
 export default function BookingClean() {
   const { cleanerId } = useLocalSearchParams();
-  const { globalParams } = useGlobalParams();
+  const { globalParams, clearGlobalParams } = useGlobalParams();
   const { date, time, rooms } = globalParams;
-
   const [cleaner, setCleaner] = useState(null);
-  const [section, setSection] = useState(1); // Section control for the ternary
-  const [taskData, setTaskData] = useState({}); // State for room task data
-  const [taskErrors, setTaskErrors] = useState({}); // Track errors for each room task
+  const [section, setSection] = useState(1); 
+  const [taskData, setTaskData] = useState({}); 
+  const [taskErrors, setTaskErrors] = useState({}); 
 
   const [modalVisible, setModalVisible] = useState(false);
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
-  const router = useRouter(); // Hook to navigate between screens
+  const router = useRouter(); 
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -72,7 +71,7 @@ export default function BookingClean() {
     }));
   };
 
-  // Validate the required fields
+
   const validateFields = () => {
     let errors = {};
     rooms.forEach((room) => {
@@ -84,17 +83,17 @@ export default function BookingClean() {
     return Object.keys(errors).length === 0;
   };
 
-  // Handle the confirm booking action
   const handleConfirmBooking = () => {
-    setModalVisible(true); // Show verification modal
+    setModalVisible(true);
   };
 
-  // Handle booking confirmation and set timer to close modal and navigate
+ 
   const handleBookingConfirmed = () => {
     setBookingConfirmed(true);
     setModalVisible(false); // Close the verification modal
     setTimeout(() => {
-      setBookingConfirmed(false); // Reset the confirmed state
+      setBookingConfirmed(false);
+      clearGlobalParams(); // Reset the confirmed state
       router.push("/home"); // Navigate to the home screen (or any other screen you prefer)
     }, 2000); // Wait for 2 seconds before navigating
   };
@@ -151,12 +150,12 @@ export default function BookingClean() {
               Sounds Good! Let's figure out what you need done!
             </Text>
 
-            {/* Loop through rooms and create the task form for each */}
+            
             {rooms.map((room, index) => {
-              // Capitalize and replace underscores with spaces
+
               const formattedRoomName = room
-                .replace(/_/g, " ") // Replace underscores with spaces
-                .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
+                .replace(/_/g, " ") 
+                .replace(/\b\w/g, (char) => char.toUpperCase()); 
 
               return (
                 <View key={index} style={styles.roomTask}>
@@ -197,7 +196,7 @@ export default function BookingClean() {
             <TouchableOpacity
               onPress={() => {
                 if (validateFields()) {
-                  setSection(3); // Only move to next section if validation passes
+                  setSection(3); 
                 }
               }}
               style={styles.confirmButton}
@@ -229,7 +228,6 @@ export default function BookingClean() {
         </Text>
         <Text style={styles.detailText}>Time: {time || "Not selected"}</Text>
 
-        {/* Loop through rooms and show the task data */}
         {rooms.map((room, index) => {
           const formattedRoomName = room
             .replace(/_/g, " ")
@@ -331,7 +329,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   scrollViewContent: {
-    paddingBottom: 30, // Add some padding at the bottom for scrolling
+    paddingBottom: 30, 
   },
   section: {
     marginBottom: 20,

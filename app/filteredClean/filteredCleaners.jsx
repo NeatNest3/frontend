@@ -13,7 +13,7 @@ import { useGlobalParams } from "../../context/GlobalParamsContext";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../account/Header";
 import cleanersData from "../../assets/data/cleaners.json";
-import { Colors } from "../../constants/Colors"; // Make sure you have your Colors defined
+import { Colors } from "../../constants/Colors"; 
 import { useRouter } from "expo-router";
 
 const FilteredCleaners = () => {
@@ -81,7 +81,7 @@ const FilteredCleaners = () => {
 
   return (
     <View>
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <View style={{borderBottomWidth:.5 }}>
         <Text style={styles.heading}>Filtered Cleaners</Text>          
         </View>
@@ -102,7 +102,7 @@ const FilteredCleaners = () => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.cleanerCard}>
-              {/* Cleaner Image */}
+
               <View style={styles.imageWrapper}>
                 <Image
                   source={{ uri: item.image }}
@@ -153,7 +153,7 @@ const FilteredCleaners = () => {
             </View>
           )}
         />
-      </ScrollView>
+      </View>
     </View>
   );
 };

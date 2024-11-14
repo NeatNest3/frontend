@@ -21,8 +21,16 @@ export const GlobalParamsProvider = ({ children }) => {
     }));
   };
 
+    const clearGlobalParams = () => {
+    setGlobalParams({
+      date: null,
+      time: null,
+      rooms: [],
+    });
+  };
+
   return (
-    <GlobalParamsContext.Provider value={{ globalParams, updateGlobalParams }}>
+    <GlobalParamsContext.Provider value={{ globalParams, updateGlobalParams, clearGlobalParams }}>
       {children}
     </GlobalParamsContext.Provider>
   );

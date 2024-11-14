@@ -1,14 +1,14 @@
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
-import { GlobalParamsProvider } from './../context/GlobalParamsContext';
+import { GlobalParamsProvider, useGlobalParams } from './../context/GlobalParamsContext';
 import { useState, useEffect } from "react";
-import { onAuthStateChangedListener } from '../firebase/firebaseAuth'; // Auth state change listener
+import { onAuthStateChangedListener } from '../firebase/firebaseAuth'; // Firebase auth listener
 import { StyleSheet, View, ActivityIndicator } from "react-native";
-import { Colors } from "@/constants/Colors";
+import { Colors } from "@/constants/Colors"; // Make sure your Colors constant is accessible
 
 export default function RootLayout() {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Initially loading, until auth state is determined
+  const [loading, setLoading] = useState(true); 
 
   useFonts({
     "Playfair": require("./../assets/fonts/Playfair_9pt-Regular.ttf"),
@@ -17,43 +17,43 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    // Initialize the auth state change listener
+
     const unsubscribe = onAuthStateChangedListener((user) => {
-      setUser(user);  // Update user state based on auth changes
-      setLoading(false);  // Once Firebase state is checked, stop loading
+      setUser(user);  
+      setLoading(false); 
     });
 
-    // Clean up listener on component unmount
+
     return () => unsubscribe();
   }, []);
 
-
-  // If still loading, display nothing or a loading spinner (you can customize this as needed)
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color={Colors.PRIM_GOLD} /> 
       </View>
     );
   }
-  
-  console.log('User state: ', user);
-  
+
+  console.log("User state:", user);
+
   return (
     <GlobalParamsProvider>
       <Stack>
         {user ? (
+
           <Stack.Screen
-            name="(tabs)"
+            name="(tabs)" 
             options={{
-              headerShown: false,
+              headerShown: false, 
             }}
           />
         ) : (
+          
           <Stack.Screen
-            name="LoginScreen"
+            name="LoginScreen" 
             options={{
-              headerShown: false,
+              headerShown: false, 
             }}
           />
         )}
@@ -65,8 +65,8 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.PRIM_DARKGREEN,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.PRIM_DARKGREEN, 
   },
 });
