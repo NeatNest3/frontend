@@ -8,7 +8,8 @@ export default function Header() {
       padding:10,
       paddingTop:40,
       backgroundColor:Colors.PRIM_DARKGREEN,
-      borderBottomWidth: 1,
+      borderBottomLeftRadius:10,
+      borderBottomRightRadius:10,
       }}>
       <View style={{
         display:'flex',

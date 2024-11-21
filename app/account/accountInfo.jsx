@@ -1,49 +1,57 @@
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
-import React, { useEffect } from "react";
-import { Colors } from "./../../constants/Colors";
+import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import axios from "axios";  // For fetching data from backend
+import { Colors } from "../../constants/Colors";  // Assuming your color constants are in this file
 import { useNavigation } from "expo-router";
 
-export default function Header() {
-  const navigation = useNavigation();
+export default function AccountInfo() {
+  const [userData, setUserData] = useState(null); // User data state
+  const [customerData, setCustomerData] = useState(null); // Customer data state
+  const [error, setError] = useState(null); // Error state for handling fetch errors
+  const navigation = useNavigation()
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: " ",
+      headerTitle: "Back to Account",
       headerShown: true,
-      headerBackTitle: "Return",
+      headerBackTitle: "Back to Account",
+      headerTintColor: Colors.PRIM_DARK,
+      headerStyle: {
+        backgroundColor: Colors.PRIM_DARKGREEN,
+      },
     });
   }, [navigation]);
 
-  const users = [
-    {
-      id: 1,
-      first_name: "Jane",
-      last_name: "Doe",
-      phone: "123-456-7890",
-      email: "BookNerd3@gmail.com",
-      dob: "January 2, 1973",
-    },
-  ];
+  // Fetch user and customer data from the backend
+  const fetchData = async () => {
+    try {
+      const userResponse = await axios.get('http://192.168.1.15:8000/users/3/'); // Update with correct IP and user ID
+      setUserData(userResponse.data);
 
-  const customers = [
-    {
-      id: 1,
-      bio: "Avid book lover and aspiring writer. Always looking for the next great read!",
-    },
-  ];
+      const customerResponse = await axios.get("http://192.168.1.15:8000/customers/2/"); // Update with correct customer endpoint
+      setCustomerData(customerResponse.data);
+    } catch (err) {
+      setError("Error fetching data. Please try again later.");
+      console.error(err);
+    }
+  };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Render user information
   const renderUserItem = ({ item }) => (
     <View style={styles.userContainer}>
-      <Text style={styles.userTitle}>About Me</Text>
-      <Text style={styles.userText}>
-        Name: {item.first_name} {item.last_name}
-      </Text>
+      <Text style={styles.userTitle}>Account Information</Text>
+      <Text style={styles.userText}>Name: {item.first_name} {item.last_name}</Text>
       <Text style={styles.userText}>Phone: {item.phone}</Text>
       <Text style={styles.userText}>Email: {item.email}</Text>
       <Text style={styles.userText}>Birthday: {item.dob}</Text>
     </View>
   );
 
+  // Render customer bio
   const renderCustomerItem = ({ item }) => (
     <View style={styles.customerContainer}>
       <Text style={styles.customerTitle}>My Bio</Text>
@@ -52,45 +60,33 @@ export default function Header() {
   );
 
   return (
-    <View>
-      <View
-        style={{
-          backgroundColor: Colors.PRIM_DARKGREEN,
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Image
-            source={require("./../../assets/images/TransNoText.png")}
-            style={{
-              width: 35,
-              height: 35,
-              borderRadius: 99,
-              marginBottom: 10,
-            }}
-          />
-        </View>
-      </View>
-      <View>
-      <FlatList
-        data={users}
-        renderItem={renderUserItem}
-        keyExtractor={(item) => item.id.toString()}
-        style={styles.userList}
-      />
-      <FlatList
-        data={customers}
-        renderItem={renderCustomerItem}
-        keyExtractor={(item) => item.id.toString()}
-        style={styles.customerList}
-      />
-      </View>
+    <View style={styles.container}>
+      {/* Displaying user info if available */}
+      {userData ? (
+        <FlatList
+          data={[userData]} // FlatList expects an array, so wrap the object in an array
+          renderItem={renderUserItem}
+          keyExtractor={(item) => item.id.toString()}
+          style={styles.userList}
+        />
+      ) : (
+        <Text style={styles.errorText}>Loading user info...</Text>
+      )}
+
+      {/* Displaying customer info if available */}
+      {customerData ? (
+        <FlatList
+          data={[customerData]} // Same here, wrap the customer data in an array
+          renderItem={renderCustomerItem}
+          keyExtractor={(item) => item.id.toString()}
+          style={styles.customerList}
+        />
+      ) : (
+        <Text style={styles.errorText}>Loading customer info...</Text>
+      )}
+
+      {/* Error message */}
+      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 }
@@ -99,41 +95,55 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: Colors.PRIM_GREEN,
   },
   userContainer: {
-    backgroundColor: '#fff',
-    padding: 15,
+    backgroundColor: "#fff",
+    padding: 20,
     borderRadius: 10,
     marginBottom: 15,
     elevation: 2,
-
+    alignItems: 'center', 
+    justifyContent: 'center', 
   },
   userTitle: {
-    fontSize: 25,
-    fontFamily:'Playfair-Bold',
+    fontSize: 22, 
+    fontFamily: "Playfair-Bold",
     marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#D3D3D3", 
+    paddingBottom: 5,
   },
   userText: {
-    fontSize: 16,
-    marginBottom: 5,
-    fontFamily:'Playfair-Light',
+    fontSize: 18, 
+    marginBottom: 8,
+    fontFamily: "Playfair",
+
   },
   customerContainer: {
-    backgroundColor: '#fff',
-    padding: 15,
+    backgroundColor: "#fff",
+    padding: 20,
     borderRadius: 10,
     marginBottom: 15,
     elevation: 2,
-    
+    alignItems: 'center', 
+    justifyContent: 'center', 
   },
   customerTitle: {
-    fontSize: 25,
-    fontFamily:'Playfair-Bold',
+    fontSize: 22, 
+    fontFamily: "Playfair-Bold",
     marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#D3D3D3", 
+    paddingBottom: 5,
   },
   customerText: {
+    fontSize: 18,
+    fontFamily: "Playfair",
+  },
+  errorText: {
     fontSize: 16,
-    fontFamily:'Playfair-Light',
+    color: "red",
+    textAlign: "center",
   },
 });

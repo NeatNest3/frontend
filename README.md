@@ -1,6 +1,6 @@
 # Welcome to Neat Nest 👋
 
-This is our [Expo](https://expo.dev) project created for the ending Tech Residency at Coding Temple!
+
 
 ## Lets Get started
 
@@ -45,3 +45,6 @@ Join our community of developers creating universal apps.
 https://fonts.google.com/specimen/Playfair/license?preview.text=Welcome%20to%20Neat%20Nest,%20Your%20home%20to%20get%20things%20done&preview.size=73
 
 Playfair Designed by Claus Eggers Sorensen
+
+
+This [Expo](https://expo.dev) project is currently under development for our Tech Residency at Coding Temple!

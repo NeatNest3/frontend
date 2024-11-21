@@ -19,6 +19,8 @@ export default function Header() {
   return (
     <View style={{
       backgroundColor:Colors.PRIM_DARKGREEN,
+      borderBottomLeftRadius:10,
+      borderBottomRightRadius:10,
       }}>
       <View style={{
         display:'flex',

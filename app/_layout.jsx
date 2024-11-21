@@ -1,10 +1,12 @@
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
-import { GlobalParamsProvider, useGlobalParams } from './../context/GlobalParamsContext';
+import { GlobalParamsProvider } from './../context/GlobalParamsContext';
 import { useState, useEffect } from "react";
 import { onAuthStateChangedListener } from '../firebase/firebaseAuth'; // Firebase auth listener
 import { StyleSheet, View, ActivityIndicator } from "react-native";
 import { Colors } from "@/constants/Colors"; // Make sure your Colors constant is accessible
+import { useAuth } from '../context/AuthUserContext'
+import { AuthProvider } from "../context/AuthUserContext";
 
 export default function RootLayout() {
   const [user, setUser] = useState(null);
@@ -27,6 +29,7 @@ export default function RootLayout() {
     return () => unsubscribe();
   }, []);
 
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -38,6 +41,7 @@ export default function RootLayout() {
   console.log("User state:", user);
 
   return (
+    // <AuthProvider>
     <GlobalParamsProvider>
       <Stack>
         {user ? (
@@ -59,6 +63,7 @@ export default function RootLayout() {
         )}
       </Stack>
     </GlobalParamsProvider>
+    // </AuthProvider>
   );
 }
 

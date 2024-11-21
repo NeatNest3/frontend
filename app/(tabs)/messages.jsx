@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import Header from '../../components/Messages/Header'
 
 const messages = () => {
   return (
     <View>
-      <Text>Messages Tab</Text>
+      <Header/>
     </View>
   )
 }
