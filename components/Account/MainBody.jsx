@@ -7,9 +7,11 @@ import {
 } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
+import { useGlobalParams } from "../../context/GlobalParamsContext";
 
 export default function MainBody() {
   const router = useRouter();
+  const { setUser } = useGlobalParams();  // Access setUser from context
 
   const onMainClick = (item) => {
     router.push(item.path);
@@ -36,12 +38,18 @@ export default function MainBody() {
       name: "Customer Service",
       path: "/cs/custServ",
     },
-    {
-      id: 5,
-      name: "Logout",
-      path: "",
-    },
   ];
+
+  const handleLogout = async () => {
+    try {
+
+      setUser(null);  
+
+      router.replace('/frontend/app/LoginScreen.jsx');  
+    } catch (error) {
+      console.error("Logout Failed", error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -56,6 +64,9 @@ export default function MainBody() {
           </TouchableOpacity>
         )}
       />
+      <TouchableOpacity style={styles.touchables} onPress={handleLogout}>
+        <Text style={styles.texts}>Log Out</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -81,3 +92,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+

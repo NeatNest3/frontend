@@ -1,8 +1,14 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
 import {Colors} from './../../constants/Colors'
+import { useGlobalParams } from '../../context/GlobalParamsContext'
 
 export default function Header() {
+
+  const { globalParams } = useGlobalParams();
+
+  const userEmail = globalParams.user && globalParams.user.email ? globalParams.user.email : "User";
+
   return (
     <View style={{
       padding:10,
@@ -33,7 +39,7 @@ export default function Header() {
               fontSize: 35,
               fontFamily:'Playfair-Bold'
             }}>
-              Jane Doe
+              {userEmail}
             </Text>
           </View>
         </View>

@@ -1,17 +1,17 @@
 import React, { createContext, useContext, useState } from "react";
 
-// Create the Context
 const GlobalParamsContext = createContext();
 
-// Create a custom hook to use the context
 export const useGlobalParams = () => useContext(GlobalParamsContext);
 
-// Create a Provider component to wrap your app
+
 export const GlobalParamsProvider = ({ children }) => {
+  
   const [globalParams, setGlobalParams] = useState({
     date: null,
     time: null,
     rooms: [],
+    user: null,
   });
 
   const updateGlobalParams = (params) => {
@@ -21,8 +21,30 @@ export const GlobalParamsProvider = ({ children }) => {
     }));
   };
 
+
+  const setUser = (userData) => {
+    setGlobalParams((prevParams) => ({
+      ...prevParams,
+      user: userData,
+    }))
+  };
+
+  const clearCleanParams = () => {
+    setGlobalParams((prevParams) => ({
+      ...prevParams,
+      date: null,
+      time: null,
+      rooms: [],
+    }))
+  }
+
+  const clearUserParams = () => {
+    setUser(null);
+  }
+
+
   return (
-    <GlobalParamsContext.Provider value={{ globalParams, updateGlobalParams }}>
+    <GlobalParamsContext.Provider value={{ globalParams, updateGlobalParams, setUser, clearCleanParams, clearUserParams }}>
       {children}
     </GlobalParamsContext.Provider>
   );
