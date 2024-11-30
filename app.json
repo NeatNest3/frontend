@@ -16,7 +16,8 @@
       "supportsTablet": true,
       "runtimeVersion": {
         "policy": "appVersion"
-      }
+      },
+      "bundleIdentifier": "com.neatnest.neatnest"
     },
     "android": {
       "adaptiveIcon": {
@@ -57,9 +58,12 @@
     "updates": {
       "url": "https://u.expo.dev/74851f02-76bf-492b-a214-a4275f5fac33",
       "enabled": true,
-      "checkAutomatically": "ON_LOAD", // You can also set it to "ON_ERROR_RECOVERY" or "MANUAL"
+      "checkAutomatically": "ON_LOAD",
       "fallbackToCacheTimeout": 0
     },
-    "platforms": ["android","ios"]
+    "platforms": [
+      "android",
+      "ios"
+    ]
   }
 }
