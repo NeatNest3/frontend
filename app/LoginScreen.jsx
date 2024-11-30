@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import { Colors } from "../constants/Colors"; 
 import { useGlobalParams } from "../context/GlobalParamsContext";
 import axios from "axios";
+import {useAuth0} from 'react-native-auth0'
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -12,23 +13,31 @@ export default function LoginScreen() {
   const router = useRouter();
   const { setUser } = useGlobalParams();
 
+  const {authorize} = useAuth0()
 
   const handleSignUp = () => {
     router.push("./account/AccountCreation"); 
   };
 
-
-
-
   const handleLogin = async () => {
-
-    if (!email) {
-      setError("Please enter an email");
-      return;
-    }
 
     setLoading(true);
     setError("");
+
+    try {
+
+      const credentials = await authorize();
+
+      setUser(credentials); 
+      setLoading(false);
+
+      router.push("/home");
+    } catch (error) {
+      setError("Login failed. Please try again."); 
+      setLoading(false);
+      console.log("Auth0 login error:", error);
+    }
+  };
 
     // try {
     //   const response = await axios.get(
@@ -49,14 +58,6 @@ export default function LoginScreen() {
     //   setError("An error occurred while logging in");
     //   setLoading(false);
     // }
-
-    setUser({ email: email });
-    setLoading(false);
-
-
-    router.push("/home"); 
-
-  };
 
   return (
     <View style={styles.container}>
@@ -83,7 +84,7 @@ export default function LoginScreen() {
 
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-            <Text style={styles.buttonText}>Log in</Text>
+            <Text style={styles.buttonText}>Log in now</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.joinButton} onPress={handleSignUp} >

@@ -6,7 +6,6 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -14,13 +13,18 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.neatnest.neatnest",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "bundler": "metro",
@@ -28,10 +32,34 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      [
+        "expo-router"
+      ],
+      [
+        "react-native-auth0",
+        {
+          "domain": "dev-jbo3q8bi8aocdmxp.us.auth0.com"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "74851f02-76bf-492b-a214-a4275f5fac33"
+      }
+    },
+    "owner": "neatnest",
+    "updates": {
+      "url": "https://u.expo.dev/74851f02-76bf-492b-a214-a4275f5fac33",
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD", // You can also set it to "ON_ERROR_RECOVERY" or "MANUAL"
+      "fallbackToCacheTimeout": 0
+    },
+    "platforms": ["android","ios"]
   }
 }

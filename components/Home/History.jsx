@@ -15,7 +15,7 @@ export default function History() {
     {
       id: 1,
       name: 'Active Jobs',
-      path: '/jobs/activeJobs',  
+      path: '/jobs/ActiveJobs',  
     },
     {
       id: 2,

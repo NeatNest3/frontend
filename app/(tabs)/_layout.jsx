@@ -33,20 +33,6 @@ const TabLayout = () => {
       />
 
       <Tabs.Screen
-        name="messages"
-        options={{
-          tabBarLabel: "Messages",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="message-star"
-              size={25}
-              color={color}
-            />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
         name="account"
         options={{
           tabBarLabel: "Account",

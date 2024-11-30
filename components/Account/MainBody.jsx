@@ -8,10 +8,13 @@ import {
 import React from "react";
 import { useRouter } from "expo-router";
 import { useGlobalParams } from "../../context/GlobalParamsContext";
+import { useAuth0 } from "react-native-auth0";
 
 export default function MainBody() {
   const router = useRouter();
-  const { setUser } = useGlobalParams();  // Access setUser from context
+  const { setUser, clearGlobalParams } = useGlobalParams();  // Access setUser from context
+
+  const {clearSession} = useAuth0()
 
   const onMainClick = (item) => {
     router.push(item.path);
@@ -30,11 +33,6 @@ export default function MainBody() {
     },
     {
       id: 3,
-      name: "Payment",
-      path: "/payments/paymentList",
-    },
-    {
-      id: 4,
       name: "Customer Service",
       path: "/cs/custServ",
     },
@@ -42,8 +40,9 @@ export default function MainBody() {
 
   const handleLogout = async () => {
     try {
-
-      setUser(null);  
+      await clearSession()
+      setUser(null);
+      clearGlobalParams(null);  
 
       router.replace('/frontend/app/LoginScreen.jsx');  
     } catch (error) {

@@ -1,0 +1,25 @@
+{
+  "cli": {
+    "version": ">= 13.4.2",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "Emulator": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "Emulator2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "Emulator3": {
+      "developmentClient": true
+    },
+    "Emulator4": {
+      "distribution": "internal"
+    },
+    "production": {}
+  }
+}

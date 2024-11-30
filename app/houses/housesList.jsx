@@ -1,56 +1,54 @@
+// homeinfo.jsx
 import { View, Text, Image, StyleSheet, FlatList } from "react-native";
 import React, { useEffect } from "react";
 import { Colors } from "./../../constants/Colors";
 import { useNavigation } from "expo-router";
+import { users } from "./../../data"; 
 
 export default function HousesList() {
   const navigation = useNavigation();
+
+  // Assuming there's only one logged-in user, we can use the first user in the array for now.
+  // In a real app, this would come from your authentication or user management system.
+  const currentUser = users[0]; // Change this if you have dynamic user data
 
   useEffect(() => {
     navigation.setOptions({
       headerTitle: " ",
       headerShown: true,
       headerBackTitle: "Return",
+            
     });
   }, [navigation]);
 
-  const homes = [
-    {
-      id: 1,
-      customerId: 1,
-      homeName: "Elm Street House",
-      address: "123 Elm St",
-      city: "Springfield",
-      state: "IL",
-      zip: "62704",
-      homeType: "Home",
-      outdoorPicture: "https://via.placeholder.com/150", // Example image URL
-      pets: "Yes",
-    },
-    {
-      id: 2,
-      customerId: 1,
-      homeName: "City Apartment",
-      address: "456 Oak Ave",
-      city: "Chicago",
-      state: "IL",
-      zip: "60601",
-      homeType: "Apartment",
-      outdoorPicture: "https://via.placeholder.com/150", // Example image URL
-      pets: "No",
-    },
-  ];
-
   const renderHomeItem = ({ item }) => (
     <View style={styles.homeContainer}>
+
+      {item.outdoorPicture && (
+        <Image
+          source={{ uri: item.outdoorPicture }}
+          style={styles.homeImage}
+        />
+      )}
+
       <Text style={styles.homeTitle}>{item.homeName}</Text>
-      <Image source={{ uri: item.outdoorPicture }} style={styles.homeImage} />
+      
       <Text style={styles.homeText}>Address: {item.address}</Text>
       <Text style={styles.homeText}>City: {item.city}</Text>
       <Text style={styles.homeText}>State: {item.state}</Text>
       <Text style={styles.homeText}>Zip: {item.zip}</Text>
       <Text style={styles.homeText}>Type: {item.homeType}</Text>
-      <Text style={styles.homeText}>Pets Allowed: {item.pets}</Text>
+
+      {item.pets && (
+        <View style={styles.petsContainer}>
+          <Text style={styles.petsTitle}>Pets:</Text>
+          {item.pets.map((pet, index) => (
+            <Text key={index} style={styles.petsText}>
+              {pet.amount} {pet.type}(s)
+            </Text>
+          ))}
+        </View>
+      )}
     </View>
   );
 
@@ -80,14 +78,14 @@ export default function HousesList() {
           />
         </View>
       </View>
-      <View>
-        <FlatList
-          data={homes}
-          renderItem={renderHomeItem}
-          keyExtractor={(item) => item.id.toString()}
-          style={styles.homeList}
-        />
-      </View>
+
+
+      <FlatList
+        data={currentUser.homes}  
+        renderItem={renderHomeItem}
+        keyExtractor={(item) => item.id.toString()}
+        style={styles.homeList}
+      />
     </View>
   );
 }
@@ -95,23 +93,20 @@ export default function HousesList() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingBottom: 20,
     backgroundColor: "#f5f5f5",
   },
   homeContainer: {
+    margin: 10,
     backgroundColor: "#fff",
     padding: 15,
-    borderRadius: 8,
-    marginBottom: 15,
+    borderRadius: 10,
     elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    paddingBottom: 25,
   },
   homeTitle: {
     fontSize: 22,
-    fontWeight: "bold",
+    fontFamily: 'Playfair-Bold',
     marginBottom: 10,
   },
   homeImage: {
@@ -122,6 +117,24 @@ const styles = StyleSheet.create({
   },
   homeText: {
     fontSize: 16,
+    fontFamily: 'Playfair-Light',
+    marginBottom: 5,
+  },
+  petsContainer: {
+    marginTop: 10,
+    paddingTop: 10,
+    backgroundColor: "#f8f8f8",
+    borderRadius: 10,
+    padding: 10,
+  },
+  petsTitle: {
+    fontSize: 18,
+    fontFamily: 'Playfair-Bold',
+    marginBottom: 10,
+  },
+  petsText: {
+    fontSize: 16,
+    fontFamily: 'Playfair-Light',
     marginBottom: 5,
   },
 });

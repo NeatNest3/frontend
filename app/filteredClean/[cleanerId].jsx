@@ -123,17 +123,22 @@ export default function BookingClean() {
             <Text style={styles.buttonText}>Yes</Text>
           </TouchableOpacity>
         </View>
-        <View style={{
-          flex:1,
-          alignItems:'center'
-        }}>
-        <Image source={require('./../../assets/images/TransNoText.png')} style={{
-            width:200,
-            height:200,
-            borderRadius:99,
-            marginTop:100,
-          }} />
-          </View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+          }}
+        >
+          <Image
+            source={require("./../../assets/images/TransNoText.png")}
+            style={{
+              width: 200,
+              height: 200,
+              borderRadius: 99,
+              marginTop: 100,
+            }}
+          />
+        </View>
       </View>
     </View>
   );
@@ -166,11 +171,16 @@ export default function BookingClean() {
                   <TextInput
                     style={[
                       styles.input,
-                      taskErrors[room] && { borderColor: "red", borderWidth: 1 }, // Highlight with red border if error
+                      taskErrors[room] && {
+                        borderColor: "red",
+                        borderWidth: 1,
+                      }, // Highlight with red border if error
                     ]}
                     placeholder="Task (Required)"
                     placeholderTextColor={Colors.PRIM_DARK}
-                    onChangeText={(text) => handleTaskChange(room, "taskName", text)}
+                    onChangeText={(text) =>
+                      handleTaskChange(room, "taskName", text)
+                    }
                   />
                   {taskErrors[room] && (
                     <Text style={styles.errorText}>{taskErrors[room]}</Text>
@@ -184,7 +194,9 @@ export default function BookingClean() {
                     style={styles.input}
                     placeholder="Task Specifics (Optional)"
                     placeholderTextColor={Colors.PRIM_DARK}
-                    onChangeText={(text) => handleTaskChange(room, "taskDescription", text)}
+                    onChangeText={(text) =>
+                      handleTaskChange(room, "taskDescription", text)
+                    }
                   />
                   <Text style={styles.helperText}>
                     EX: "Hand dry Pots and Pans, Polish silverware, etc."
@@ -274,8 +286,10 @@ export default function BookingClean() {
           <Text style={styles.modalTitle}>
             Are you sure you want to confirm the booking?
           </Text>
-          <Button title="Yes" onPress={handleBookingConfirmed} />
-          <Button title="Cancel" onPress={() => setModalVisible(false)} />
+          <View style={styles.buttonContainer}>
+            <Button title="Book" onPress={handleBookingConfirmed} color={Colors.PRIM_GREEN} />
+            <Button title="Cancel" onPress={() => setModalVisible(false)} color={Colors.PRIM_DARKGREEN} />
+          </View>
         </View>
       </View>
     </Modal>
@@ -321,7 +335,7 @@ export default function BookingClean() {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     backgroundColor: "#fff",
   },
   title: {
@@ -457,5 +471,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "Playfair-Bold",
     marginBottom: 20,
+    textAlign:'center'
+  },
+  buttonContainer: {
+    flexDirection: "row", // Align buttons side by side
+    justifyContent: "space-around",
+    width: "50%",
   },
 });
