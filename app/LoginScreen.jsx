@@ -13,7 +13,7 @@ export default function LoginScreen() {
   const router = useRouter();
   const { setUser } = useGlobalParams();
 
-  const {authorize} = useAuth0()
+  const {authorize, user } = useAuth0()
 
   const handleSignUp = () => {
     router.push("./account/AccountCreation"); 
@@ -27,6 +27,8 @@ export default function LoginScreen() {
     try {
 
       const credentials = await authorize();
+
+      await axios.get(`http://192.168.1.15:8000/user/${user.id}`)
 
       setUser(credentials); 
       setLoading(false);

@@ -74,22 +74,29 @@ export const activeClean = [
       email: "Bookcleaner@gmail.com",
     },
     home: {
+
       id: 1,
       homeName: "Elm Street House",
-      address: "123 Elm St",
+      address_line_one: "123 Elm St",
       city: "Springfield",
       state: "IL",
-      zip: "62704",
+      zipcode: "62704",
       outdoorPicture: "https://via.placeholder.com/150",
     },
     date: "12-10", 
     time: "2:00pm",
     rooms: [
       {
-        roomName: "Living Room",
-        tasks: [
-          { taskName: "Vacuum", specifications: null },
-          { taskName: "Dust", specifications: "by the television" },
+        name: "Living Room",
+        services: [
+          { 
+            name: "Vacuum", 
+            description: null 
+          },
+          { 
+            name: "Dust", 
+            specifications: "by the television" 
+          },
         ],
       },
       {

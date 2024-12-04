@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Modal, Button } from "react-native";
-import { Colors } from "./../../constants/Colors";
+import { Colors } from "../../constants/Colors";
 import { useNavigation } from "expo-router";
-import { activeClean } from "./../../data"; // Assuming you have the activeClean data
+import { activeClean } from "../../data"; // Assuming you have the activeClean data
 
 export default function ActiveJobsList() {
   const navigation = useNavigation();

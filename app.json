@@ -17,14 +17,14 @@
       "runtimeVersion": {
         "policy": "appVersion"
       },
-      "bundleIdentifier": "com.neatnest.neatnest"
+      "bundleIdentifier": "tech.neatnest"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.neatnest.neatnest",
+      "package": "tech.neatnest",
       "runtimeVersion": "1.0.0"
     },
     "web": {

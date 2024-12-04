@@ -7,19 +7,25 @@
     "Emulator": {
       "android": {
         "buildType": "apk"
-      }
+      },
+      "channel": "emulator"
     },
     "Emulator2": {
       "android": {
         "gradleCommand": ":app:assembleRelease"
-      }
+      },
+      "channel": "emulator2"
     },
     "Emulator3": {
-      "developmentClient": true
+      "developmentClient": true,
+      "channel": "emulator3"
     },
     "Emulator4": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "channel": "emulator4"
     },
-    "production": {}
+    "production": {
+      "channel": "production"
+    }
   }
 }

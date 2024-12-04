@@ -7,7 +7,7 @@ import { Colors } from "../constants/Colors";
 
 
 export default function RootLayout() {
-    
+  
   const  {globalParams}  = useGlobalParams(); 
 
   const router = useRouter()

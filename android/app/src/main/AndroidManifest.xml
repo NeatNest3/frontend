@@ -29,8 +29,8 @@
         <data android:scheme="neatnest"/>
         <data android:scheme="com.neatnest.neatnest"/>
         <data android:scheme="exp+neatnest"/>
-        <data android:scheme="@string/auth0Scheme"/>
-        <data android:host="@string/auth0Domain"/>
+        <data android:scheme="@string/com_auth0_client_id"/>
+        <data android:host="@string/com_auth0_domain"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>

@@ -12,7 +12,7 @@ import { useAuth0 } from "react-native-auth0";
 
 export default function MainBody() {
   const router = useRouter();
-  const { setUser, clearGlobalParams } = useGlobalParams();  // Access setUser from context
+  const { setUser, clearCleanParams } = useGlobalParams();  // Access setUser from context
 
   const {clearSession} = useAuth0()
 
@@ -42,7 +42,7 @@ export default function MainBody() {
     try {
       await clearSession()
       setUser(null);
-      clearGlobalParams(null);  
+      clearCleanParams(null);  
 
       router.replace('/frontend/app/LoginScreen.jsx');  
     } catch (error) {
