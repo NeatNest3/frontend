@@ -4,9 +4,14 @@ import { Colors } from '../../constants/Colors';
 import { useGlobalParams } from '../../context/GlobalParamsContext'; // Import context
 
 export default function Heading() {
-  const { globalParams } = useGlobalParams();
+  const { globalParams } = useGlobalParams(); // Access globalParams from context
 
-  const userEmail = globalParams.user && globalParams.user.email ? globalParams.user.email : "User";
+  // Extract user data from globalParams
+  const { user } = globalParams;
+
+  // If the user data is available, use first_name and last_name
+  const first_name = user?.first_name || ''; // Fallback to empty string if user is not available
+  const last_name = user?.last_name || ''; // Fallback to empty string if user is not available
 
   return (
     <View>
@@ -49,7 +54,7 @@ export default function Heading() {
                 fontFamily: 'Playfair-Bold',
               }}
             >
-              {userEmail}
+              {first_name} {last_name}
             </Text>
           </View>
         </View>

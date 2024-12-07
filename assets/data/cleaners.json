@@ -2,24 +2,24 @@
   {
     "id": "1",
     "name": "Cleaner 1",
-    "preferred_rooms": ["kitchen", "bathroom"],
-    "bio": "Lorem ipsum odor amet, consectetuer adipiscing elit. Fringilla curabitur morbi integer etiam lacus lobortis. ",
+    "preferred_rooms": "kitchen, bathroom",
+    "bio_work_history": "Lorem ipsum odor amet, consectetuer adipiscing elit. Fringilla curabitur morbi integer etiam lacus lobortis. ",
     "image": "https://picsum.photos/201",
     "city": "Boston",
     "state": "MA",
     "rating": 4.8,
     "specialties": [
       {
-        "name": "Super Sweeper",
-        "image": "https://picsum.photos/20"
+        "name": "Super Sweeper"
+
       },
       {
-        "name": "Power Polisher",
-        "image": "https://picsum.photos/20"
+        "name": "Power Polisher"
+
       },
       {
-        "name": "Dust Devil",
-        "image": "https://picsum.photos/20"
+        "name": "Dust Devil"
+
       }
     ],
     "pet_friendly": ["cats", "dogs"]  

@@ -13,53 +13,36 @@ export default function LoginScreen() {
   const router = useRouter();
   const { setUser } = useGlobalParams();
 
-  const {authorize, user } = useAuth0()
-
-  const handleSignUp = () => {
-    router.push("./account/AccountCreation"); 
-  };
+  const {authorize} = useAuth0()
 
   const handleLogin = async () => {
-
     setLoading(true);
     setError("");
-
+  
     try {
-
       const credentials = await authorize();
-
-      await axios.get(`http://192.168.1.15:8000/user/${user.id}`)
-
-      setUser(credentials); 
+      const userEmail = credentials.email;
+      console.log("User Email:", userEmail);
+  
+      const response = await axios.get(`https://https-www-neatnest-tech.onrender.com/user/${userEmail}`);
+      setUser(response.data);  
       setLoading(false);
-
+  
       router.push("/home");
+  
     } catch (error) {
-      setError("Login failed. Please try again."); 
-      setLoading(false);
-      console.log("Auth0 login error:", error);
+      // If user email isn't found, redirect the user to the account creation screen
+      if (error.response && error.response.status === 404) {
+        console.log("Email not found, redirecting to account creation.");
+        router.push("./account/AccountCreation");
+      } else {
+        // Handle other errors 
+        setError("Login failed. Please try again.");
+        setLoading(false);
+        console.log("Auth0 login error:", error);
+      }
     }
   };
-
-    // try {
-    //   const response = await axios.get(
-    //     `http://192.168.1.15:8081/users/?email=${email}`
-    //   );
-
-    //   if (response.data.length === 0) {
-    //     setError("User not found");
-    //     setLoading(false);
-
-    //     return "user found at ", response.data;
-    //   }
-
-    //   const userData = response.data[0];
-    //   setUser(userData);
-    //   setLoading(false);
-    // } catch (error) {
-    //   setError("An error occurred while logging in");
-    //   setLoading(false);
-    // }
 
   return (
     <View style={styles.container}>
@@ -75,23 +58,11 @@ export default function LoginScreen() {
       <View style={styles.bottomSection}>
         <Text style={styles.loginText}>Let's Login</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
-
-
         <View style={styles.buttonsContainer}>
           <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
             <Text style={styles.buttonText}>Log in now</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.joinButton} onPress={handleSignUp} >
-            <Text style={styles.buttonText}>Sign Up</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </View>

@@ -13,6 +13,7 @@ import { Colors } from "../../constants/Colors";
 import { useNavigation } from "expo-router";
 import axios from "axios"; // Import axios to make HTTP requests
 import { CheckBox } from "react-native-elements";
+import { useGlobalParams } from "../../context/GlobalParamsContext";
 
 
 export default function AccountCreationScreen() {
@@ -28,6 +29,7 @@ export default function AccountCreationScreen() {
   const [error, setError] = useState(""); // Error message state
   const router = useRouter();
   const navigation = useNavigation();
+  const { setUser } = useGlobalParams();
 
   useEffect(() => {
     navigation.setOptions({
@@ -38,7 +40,8 @@ export default function AccountCreationScreen() {
   }, [navigation]);
 
   const handleAccountCreation = async () => {
-    // Check if all fields are filled out
+    setError("");
+    
     if (
       !firstName ||
       !lastName ||
@@ -53,20 +56,19 @@ export default function AccountCreationScreen() {
       setError("Please fill in all fields.");
       return;
     }
-
-    // Check if passwords match
+  
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
-
-    // Check if dob is in correct format (YYYY-MM-DD)
-    const dobPattern = /^\d{4}-\d{2}-\d{2}$/; // Regex for YYYY-MM-DD format
+  
+  
+    const dobPattern = /^\d{4}-\d{2}-\d{2}$/; 
     if (!dobPattern.test(dob)) {
       setError("Please enter a valid date of birth (YYYY-MM-DD).");
       return;
     }
-
+  
     try {
       const userData = {
         username: email,
@@ -80,21 +82,17 @@ export default function AccountCreationScreen() {
         role: role,
         allergies: [], // Can be expanded later based on user input
       };
-
+  
       // Send user data to the Django backend to create the user
       const response = await axios.post(
-        "http://192.168.1.15:8000/create-user/",
-
-        userData,
-        {
-          headers: {
-            Authorization: `Bearer ${idToken}`, // Send Firebase ID token for authentication
-          },
-        }
+        "https://https-www-neatnest-tech.onrender.com/user/",
+        userData
       );
 
-      console.log(response.data, "Authorization information");
-
+      setUser(response.data)
+  
+      console.log(response.data, "User Information");
+  
       // Check the response from the backend
       if (response.status === 201) {
         router.push("/home"); // Redirect to home after successful account creation

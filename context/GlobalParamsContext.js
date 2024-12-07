@@ -42,9 +42,18 @@ export const GlobalParamsProvider = ({ children }) => {
     setUser(null);
   }
 
+  const clearAllParams = () => {
+    setGlobalParams({
+      date: null,
+      time: null,
+      rooms: [],
+      user: null,
+    });
+  };
+
 
   return (
-    <GlobalParamsContext.Provider value={{ globalParams, updateGlobalParams, setUser, clearCleanParams, clearUserParams }}>
+    <GlobalParamsContext.Provider value={{ globalParams, updateGlobalParams, setUser, clearCleanParams, clearUserParams, clearAllParams }}>
       {children}
     </GlobalParamsContext.Provider>
   );

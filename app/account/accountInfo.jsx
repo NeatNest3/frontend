@@ -1,79 +1,68 @@
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
-import React, { useEffect } from "react";
-import { Colors } from "./../../constants/Colors";
-import { useNavigation } from "expo-router";
-import { users } from "./../../data";
+import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useGlobalParams } from '../../context/GlobalParamsContext'; // Import the global context
+import axios from 'axios';
+import { Colors } from '../../constants/Colors'; // Assuming you have some colors defined
 
-export default function Header() {
-  const navigation = useNavigation();
+export default function AccountInfo() {
+  const { globalParams } = useGlobalParams(); // Get the global params
+  const [customerData, setCustomerData] = useState(null); // To hold customer data
+  const [loading, setLoading] = useState(true); // To handle loading state
+  const [error, setError] = useState(null); // To handle errors
 
   useEffect(() => {
-    navigation.setOptions({
-      headerTitle: " ",
-      headerShown: true,
-      headerBackTitle: "Return",
-    });
-  }, [navigation]);
+    const fetchCustomerData = async () => {
+      try {
+        const response = await axios.get(`https://https-www-neatnest-tech.onrender.com/customer/${globalParams.user.id}`);
+        setCustomerData(response.data); // Update the state with the fetched customer data
+      } catch (error) {
+        setError('Error fetching customer data');
+        console.error(error);
+      } finally {
+        setLoading(false); // Stop loading once data is fetched or error occurs
+      }
+    };
 
-  const renderUserItem = ({ item }) => (
-    <View style={styles.userContainer}>
-      
-      {item.role.details.profile_pic && (
-        <Image
-          source={{ uri: item.role.details.profile_pic }} 
-          style={styles.profileImage}
-        />
-      )}
-      
-      <Text style={styles.userTitle}>About Me</Text>
-      <Text style={styles.userText}>
-        Name: {item.first_name} {item.last_name}
-      </Text>
-      <Text style={styles.userText}>Phone: {item.phone}</Text>
-      <Text style={styles.userText}>Email: {item.email}</Text>
-      <Text style={styles.userText}>Birthday: {item.dob}</Text>
+    if (globalParams.user) {
+      fetchCustomerData(); // Only fetch customer data if user exists
+    }
+  }, [globalParams.user]); // This useEffect will re-run if globalParams.user changes
 
-      <View style={styles.roleContainer}>
-        <Text style={styles.userTitle}>Short Bio</Text>
-        <Text style={styles.userText}>{item.role.details.bio}</Text>
-      </View>
-    </View>
-  );
+  if (loading) {
+    return <Text>Loading...</Text>; // Display loading message until data is fetched
+  }
+
+  if (error) {
+    return <Text>{error}</Text>; // Display error message if there is any
+  }
+
+  // Destructure the customer data from the state
+  const { first_name, last_name, bio, profile_pic } = customerData || {};
 
   return (
-    <View>
-      <View
-        style={{
-          backgroundColor: Colors.PRIM_DARKGREEN,
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Image
-            source={require("./../../assets/images/TransNoText.png")}
-            style={{
-              width: 35,
-              height: 35,
-              borderRadius: 99,
-              marginBottom: 10,
-            }}
-          />
+    <View style={styles.container}>
+      <View style={styles.profileHeader}>
+        {/* Display the profile image */}
+        <Image
+          source={{ uri: profile_pic || 'https://picsum.photos/200' }} // Use placeholder if no profile pic
+          style={styles.profileImage}
+        />
+        <View style={styles.userInfo}>
+          <Text style={styles.welcomeText}>Welcome Back,</Text>
+          <Text style={styles.userName}>{first_name} {last_name}</Text>
         </View>
       </View>
-      <View>
-        <FlatList
-          data={users} // Using imported data
-          renderItem={renderUserItem}
-          keyExtractor={(item) => item.id.toString()}
-          style={styles.userList}
+
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoTitle}>About Me</Text>
+        <TextInput
+          style={styles.bioText}
+          value={bio}
+          multiline
+          editable={false}
         />
       </View>
+
     </View>
   );
 }
@@ -81,38 +70,61 @@ export default function Header() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.BACKGROUND,
     padding: 20,
-    backgroundColor: '#f5f5f5',
   },
-  userContainer: {
-    margin: 10,
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 10,
-    paddingBottom: 25,
-    elevation: 2,
-  },
-  userTitle: {
-    fontSize: 25,
-    fontFamily: 'Playfair-Bold',
-    marginBottom: 10,
-  },
-  userText: {
-    fontSize: 16,
-    marginBottom: 5,
-    fontFamily: 'Playfair-Light',
-  },
-  roleContainer: {
-    marginTop: 15,
-    paddingTop: 10,
-    backgroundColor: '#f8f8f8',
-    borderRadius: 10,
+  profileHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   profileImage: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    marginBottom: 15, 
-    alignSelf: 'center', 
+    marginRight: 20,
+  },
+  userInfo: {
+    justifyContent: 'center',
+  },
+  welcomeText: {
+    fontSize: 18,
+    fontFamily: 'Playfair',
+    color: Colors.PRIMARY,
+  },
+  userName: {
+    fontSize: 24,
+    fontFamily: 'Playfair-Bold',
+    color: Colors.DARK,
+  },
+  infoContainer: {
+    marginVertical: 20,
+  },
+  infoTitle: {
+    fontSize: 20,
+    fontFamily: 'Playfair-Bold',
+    color: Colors.PRIMARY,
+  },
+  bioText: {
+    fontSize: 16,
+    fontFamily: 'Playfair-Light',
+    marginTop: 10,
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: Colors.GRAY,
+    backgroundColor: Colors.WHITE,
+    height: 100,
+  },
+  editButton: {
+    backgroundColor: Colors.BUTTON,
+    padding: 10,
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  editButtonText: {
+    color: Colors.WHITE,
+    fontSize: 16,
+    fontFamily: 'Playfair-Bold',
   },
 });
