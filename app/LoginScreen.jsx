@@ -20,23 +20,24 @@ export default function LoginScreen() {
     setError("");
   
     try {
-      const credentials = await authorize();
+      // Use the custom redirect URI
+      const redirectUri = "neatnest://callback"; // Your custom scheme
+      const credentials = await authorize({ redirectUri });
       const userEmail = credentials.email;
       console.log("User Email:", userEmail);
   
       const response = await axios.get(`https://https-www-neatnest-tech.onrender.com/user/${userEmail}`);
-      setUser(response.data);  
+      setUser(response.data);
       setLoading(false);
   
-      router.push("/home");
+      router.push("/home"); 
   
     } catch (error) {
-      // If user email isn't found, redirect the user to the account creation screen
       if (error.response && error.response.status === 404) {
         console.log("Email not found, redirecting to account creation.");
         router.push("./account/AccountCreation");
       } else {
-        // Handle other errors 
+        // Handle other errors
         setError("Login failed. Please try again.");
         setLoading(false);
         console.log("Auth0 login error:", error);

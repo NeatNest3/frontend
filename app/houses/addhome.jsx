@@ -11,17 +11,22 @@ import {
 import { useRouter } from "expo-router";
 import { Colors } from "../../constants/Colors";
 import { useNavigation } from "expo-router";
-import axios from "axios"; // Import axios to make HTTP requests
-import { CheckBox } from "react-native-elements"; // Import CheckBox component
+import axios from "axios"; 
+import { CheckBox } from "react-native-elements"; 
+import { useGlobalParams } from "../../context/GlobalParamsContext"; 
+
 
 export default function HomeCreationScreen() {
-  const [homeName, setHomeName] = useState(""); // Home Name
-  const [addressLineOne, setAddressLineOne] = useState(""); // Address Line 1
-  const [city, setCity] = useState(""); // City
-  const [state, setState] = useState(""); // State
-  const [zipcode, setZipcode] = useState(""); // Zipcode
-  const [children, setChildren] = useState(false); // Children checkbox
-  const [error, setError] = useState(""); // Error message state
+  const [homeName, setHomeName] = useState(""); 
+  const [addressLineOne, setAddressLineOne] = useState(""); 
+  const [city, setCity] = useState(""); 
+  const [state, setState] = useState(""); 
+  const [zipcode, setZipcode] = useState(""); 
+  const [children, setChildren] = useState(false); 
+  const [pets, setPets] = useState(false); 
+  const [error, setError] = useState(""); 
+  const { globalParams } = useGlobalParams(); 
+  const userId = globalParams?.user?.id; 
   const router = useRouter();
   const navigation = useNavigation();
 
@@ -47,12 +52,14 @@ export default function HomeCreationScreen() {
         city,
         state,
         zipcode,
-        children, // Include children info
+        kids: children, 
+        pets, 
+        customer: userId, // Send the customer ID (userId) with the home data
       };
 
       // Send home data to the backend (Django or other)
       const response = await axios.post(
-        "http://192.168.1.15:8000/create-home/", // Adjust the URL to your backend
+        "http://192.168.1.15:8000/home/", // Adjust the URL to your backend
         homeData
       );
 
@@ -85,7 +92,6 @@ export default function HomeCreationScreen() {
           creation.
         </Text>
 
-        {/* Form Fields */}
         <TextInput
           style={styles.input}
           placeholder="Home Name"
@@ -115,10 +121,9 @@ export default function HomeCreationScreen() {
           placeholder="Zipcode"
           value={zipcode}
           onChangeText={setZipcode}
-          keyboardType="numeric" // Ensures only numeric input for zipcode
+          keyboardType="numeric" 
         />
 
-        {/* Checkbox for Children */}
         <View style={styles.checkboxContainer}>
           <CheckBox
             title="Have children?"
@@ -132,12 +137,12 @@ export default function HomeCreationScreen() {
 
         <View style={styles.checkboxContainer}>
           <CheckBox
-            title="What about pets?"
-            checked={children}
-            onPress={() => setChildren(!children)}
+            title="Have pets?"
+            checked={pets}
+            onPress={() => setPets(!pets)}
             containerStyle={styles.checkbox}
-            checkedIcon={<Image source={require('../../assets/images/children.gif')} style={styles.icon} />}
-            uncheckedIcon={<Image source={require('../../assets/images/children.gif')} style={[styles.icon, { opacity: 0.5 }]} />}
+            checkedIcon={<Image source={require('../../assets/images/pawprint.gif')} style={styles.icon} />}
+            uncheckedIcon={<Image source={require('../../assets/images/pawprint.gif')} style={[styles.icon, { opacity: 0.5 }]} />}
           />
         </View>
 

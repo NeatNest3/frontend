@@ -26,11 +26,8 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="neatnest"/>
-        <data android:scheme="com.neatnest.neatnest"/>
-        <data android:scheme="exp+neatnest"/>
-        <data android:scheme="@string/com_auth0_client_id"/>
-        <data android:host="@string/com_auth0_domain"/>
+        <data android:scheme="neatnest" android:host="@string/com_auth0_domain" android:pathPrefix="/android/tech.neatnest/callback"/>
+        <data android:scheme="neatnest" android:host="@string/com_auth0_domain" android:pathPrefix="/android/tech.neatnest/logout"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>

@@ -11,9 +11,7 @@ import {
 } from "react-native";
 import { useGlobalParams } from "../../context/GlobalParamsContext";
 import { useNavigation } from "@react-navigation/native";
-import Header from "../account/Header";
-import cleanersData from "../../assets/data/cleaners.json";
-import { Colors } from "../../constants/Colors"; // Make sure you have your Colors defined
+import { Colors } from "../../constants/Colors";
 import { useRouter } from "expo-router";
 
 const FilteredCleaners = () => {
@@ -29,30 +27,31 @@ const FilteredCleaners = () => {
 
   const handleBookNow = (cleaner) => {
     router.push({
-      pathname:`/filteredClean/${cleaner.id}`,
-      query: { cleanerId: cleaner.id}
-    })
-  }
-
+      pathname: `/filteredClean/${cleaner.id}`,
+      query: { cleanerId: cleaner.id },
+    });
+  };
 
   useEffect(() => {
-    const filterCleaners = () => {
+    const fetchCleaners = async () => {
       setLoading(true);
-
       try {
-        const roomsArray = rooms || [];
-        const filtered = cleanersData.filter((cleaner) =>
-          roomsArray.some((room) => cleaner.preferred_rooms.includes(room))
+        const response = await fetch(
+          "https://https-www-neatnest-tech.onrender.com/service_provider/"
+        );
+        const data = await response.json();
+        const filtered = data.filter((cleaner) =>
+          rooms.some((room) => cleaner.preferred_rooms.includes(room))
         );
         setFilteredCleaners(filtered);
       } catch (error) {
-        setError("Failed to filter cleaners.");
+        setError("Failed to fetch cleaners.");
       } finally {
         setLoading(false);
       }
     };
 
-    filterCleaners();
+    fetchCleaners();
   }, [rooms]);
 
   useEffect(() => {
@@ -60,10 +59,10 @@ const FilteredCleaners = () => {
       headerTitle: " ",
       headerShown: true,
       headerBackTitle: "Reselect Date",
-      headerTintColor:Colors.PRIM_DARK,
+      headerTintColor: Colors.PRIM_DARK,
       headerStyle: {
-        backgroundColor:Colors.PRIM_DARKGREEN,
-      }
+        backgroundColor: Colors.PRIM_DARKGREEN,
+      },
     });
   }, [navigation]);
 
@@ -82,8 +81,8 @@ const FilteredCleaners = () => {
   return (
     <View>
       <ScrollView style={styles.container}>
-        <View style={{borderBottomWidth:.5 }}>
-        <Text style={styles.heading}>Filtered Cleaners</Text>          
+        <View style={{ borderBottomWidth: 0.5 }}>
+          <Text style={styles.heading}>Filtered Cleaners</Text>
         </View>
 
         <View>
@@ -99,13 +98,14 @@ const FilteredCleaners = () => {
 
         <FlatList
           data={filteredCleaners}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.cleanerCard}>
-              {/* Cleaner Image */}
               <View style={styles.imageWrapper}>
                 <Image
-                  source={{ uri: item.image }}
+                  source={{
+                    uri: `https://picsum.photos/100?random=${item.id}`,
+                  }}
                   style={styles.cleanerImage}
                 />
                 <View style={styles.ratingContainer}>
@@ -122,10 +122,6 @@ const FilteredCleaners = () => {
                   keyExtractor={(specialty) => specialty.name}
                   renderItem={({ item: specialty }) => (
                     <View style={styles.specialtyContainer}>
-                      <Image
-                        source={{ uri: specialty.icon_url }}
-                        style={styles.iconImage}
-                      />
                       <Text style={styles.specialtyText}>{specialty.name}</Text>
                     </View>
                   )}
@@ -138,15 +134,14 @@ const FilteredCleaners = () => {
                 <Text style={styles.cleanerText}>
                   {item.pet_friendly === false
                     ? "Not pet-friendly"
-                    : `Loves ${item.pet_friendly
-                        .map(
-                          (pet) => pet.charAt(0).toUpperCase() + pet.slice(1)
-                        )
-                        .join(", ")}`}
+                    : "Loves pets!"}
                 </Text>
               </View>
               <View>
-                <TouchableOpacity style={styles.bookNowButton} onPress={()=> handleBookNow(item)}>
+                <TouchableOpacity
+                  style={styles.bookNowButton}
+                  onPress={() => handleBookNow(item)}
+                >
                   <Text style={styles.bookNowText}>Book Now</Text>
                 </TouchableOpacity>
               </View>
@@ -172,7 +167,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontFamily: "Playfair-Bold",
     textAlign: "center",
-    borderBottomWidth:.5
+    borderBottomWidth: 0.5,
   },
   details: {
     fontSize: 18,
@@ -234,9 +229,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 10,
     padding: 5,
-    paddingRight:8,
+    paddingRight: 8,
     borderRadius: 20,
-    backgroundColor:Colors.PRIM_GREEN
+    backgroundColor: Colors.PRIM_GREEN,
   },
   iconImage: {
     width: 20,
@@ -252,7 +247,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     fontSize: 16,
     fontFamily: "Playfair",
-    paddingLeft:15
+    paddingLeft: 15,
   },
   bookNowButton: {
     position: "absolute",
@@ -265,7 +260,7 @@ const styles = StyleSheet.create({
   },
   bookNowText: {
     fontSize: 20,
-    fontFamily: "Playfair-Bold"
+    fontFamily: "Playfair-Bold",
   },
   errorText: {
     fontSize: 18,

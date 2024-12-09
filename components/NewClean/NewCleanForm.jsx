@@ -20,7 +20,7 @@ const roomsList = [
   { id: "bedroom", name: "Bedroom", image: require("./../../assets/images/bed.gif") },
   { id: "living_room", name: "Living Room", image: require("./../../assets/images/livingroom.gif") },
   { id: "laundry", name: "Laundry", image: require("./../../assets/images/laundry.gif") },
-  { id: "other", name: "Other", image: require("./../../assets/images/bed.gif") },
+  { id: "other", name: "Other", image: require("./../../assets/images/question.gif") },
 ];
 
 const NewCleanForm = () => {

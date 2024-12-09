@@ -14,29 +14,29 @@ export default function AccountInfo() {
     const fetchCustomerData = async () => {
       try {
         const response = await axios.get(`https://https-www-neatnest-tech.onrender.com/customer/${globalParams.user.id}`);
-        setCustomerData(response.data); // Update the state with the fetched customer data
+        setCustomerData(response.data); 
       } catch (error) {
         setError('Error fetching customer data');
         console.error(error);
       } finally {
-        setLoading(false); // Stop loading once data is fetched or error occurs
+        setLoading(false); 
       }
     };
 
     if (globalParams.user) {
-      fetchCustomerData(); // Only fetch customer data if user exists
+      fetchCustomerData(); 
     }
-  }, [globalParams.user]); // This useEffect will re-run if globalParams.user changes
+  }, [globalParams.user]); 
 
   if (loading) {
-    return <Text>Loading...</Text>; // Display loading message until data is fetched
+    return <Text>Loading...</Text>; 
   }
 
   if (error) {
-    return <Text>{error}</Text>; // Display error message if there is any
+    return <Text>{error}</Text>; 
   }
 
-  // Destructure the customer data from the state
+
   const { first_name, last_name, bio, profile_pic } = customerData || {};
 
   return (

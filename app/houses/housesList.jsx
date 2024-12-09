@@ -1,15 +1,21 @@
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect } from "react";
 import { Colors } from "./../../constants/Colors";
 import { useNavigation, useRouter } from "expo-router";
-import { users } from "./../../data"; 
+import { users } from "./../../data";
+import axios from "axios";
+import { useGlobalParams } from "../../context/GlobalParamsContext";
 
 export default function HousesList() {
   const navigation = useNavigation();
-
-  const router = useRouter()
-  // In a real app, this would come from your authentication or user management system.
-  const currentUser = users[0]; // Change this if you have dynamic user data
+  const router = useRouter();
 
   useEffect(() => {
     navigation.setOptions({
@@ -19,30 +25,58 @@ export default function HousesList() {
     });
   }, [navigation]);
 
+  const { globalParams } = useGlobalParams();
+  const userId = globalParams?.user?.id; // Access the userId from globalParams
 
-  const handleNewHome =() =>{
-    router.push('./addhome')
-  }
+  const [homes, setHomes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!userId) {
+      setError("No user ID found, please log in.");
+      setLoading(false);
+      return;
+    }
+
+    const fetchHomes = async () => {
+      try {
+        // Fetch homes by userId from the backend
+        const response = await axios.get(
+          `http://127.0.0.1:8000/home/?customer=${userId}`
+        );
+        setHomes(response.data); // Update the state with the fetched homes data
+      } catch (error) {
+        setError("Error fetching homes");
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHomes();
+  }, [userId, navigation]); // Re-run this effect if userId or navigation changes
+
+  const handleNewHome = () => {
+    router.push("./addhome");
+  };
 
   const renderHomeItem = ({ item }) => (
     <View style={styles.homeContainer}>
-
       {item.outdoorPicture && (
-        <Image
-          source={{ uri: item.outdoorPicture }}
-          style={styles.homeImage}
-        />
+        <Image source={{ uri: item.outdoorPicture }} style={styles.homeImage} />
       )}
 
-      <Text style={styles.homeTitle}>{item.homeName}</Text>
-      
-      <Text style={styles.homeText}>Address: {item.address}</Text>
+      <Text style={styles.homeTitle}>{item.home_name}</Text>
+      <Text style={styles.homeText}>
+        Address: {item.address_line_one} {item.address_line_two}
+      </Text>
       <Text style={styles.homeText}>City: {item.city}</Text>
       <Text style={styles.homeText}>State: {item.state}</Text>
-      <Text style={styles.homeText}>Zip: {item.zip}</Text>
-      <Text style={styles.homeText}>Type: {item.homeType}</Text>
+      <Text style={styles.homeText}>Zip: {item.zipcode}</Text>
+      <Text style={styles.homeText}>Type: {item.home_type}</Text>
 
-      {item.pets && (
+      {item.pets && item.pets.length > 0 && (
         <View style={styles.petsContainer}>
           <Text style={styles.petsTitle}>Pets:</Text>
           {item.pets.map((pet, index) => (
@@ -55,6 +89,14 @@ export default function HousesList() {
     </View>
   );
 
+  if (loading) {
+    return <Text>Loading homes...</Text>; // Loading state
+  }
+
+  if (error) {
+    return <Text>{error}</Text>; // Display error if fetch fails
+  }
+
   return (
     <View style={styles.container}>
       <View style={{ backgroundColor: Colors.PRIM_DARKGREEN }}>
@@ -66,16 +108,19 @@ export default function HousesList() {
         </View>
       </View>
 
-      {currentUser.homes.length === 0 ? (
+      {homes.length === 0 ? (
         <View style={styles.noHomesCard}>
           <Text style={styles.noHomesText}>No homes submitted yet!</Text>
-          <TouchableOpacity style={styles.addHomeButton} onPress={handleNewHome}>
+          <TouchableOpacity
+            style={styles.addHomeButton}
+            onPress={handleNewHome}
+          >
             <Text style={styles.addHomeButtonText}>Add Home</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <FlatList
-          data={currentUser.homes}  
+          data={homes}
           renderItem={renderHomeItem}
           keyExtractor={(item) => item.id.toString()}
           style={styles.homeList}
@@ -101,7 +146,7 @@ const styles = StyleSheet.create({
   },
   homeTitle: {
     fontSize: 22,
-    fontFamily: 'Playfair-Bold',
+    fontFamily: "Playfair-Bold",
     marginBottom: 10,
   },
   homeImage: {
@@ -112,7 +157,7 @@ const styles = StyleSheet.create({
   },
   homeText: {
     fontSize: 16,
-    fontFamily: 'Playfair-Light',
+    fontFamily: "Playfair-Light",
     marginBottom: 5,
   },
   petsContainer: {
@@ -124,29 +169,29 @@ const styles = StyleSheet.create({
   },
   petsTitle: {
     fontSize: 18,
-    fontFamily: 'Playfair-Bold',
+    fontFamily: "Playfair-Bold",
     marginBottom: 10,
   },
   petsText: {
     fontSize: 16,
-    fontFamily: 'Playfair-Light',
+    fontFamily: "Playfair-Light",
     marginBottom: 5,
   },
   noHomesCard: {
     marginTop: 150,
-    margin:15,
+    margin: 15,
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
     elevation: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingBottom: 25,
   },
   noHomesText: {
     fontSize: 24,
-    fontFamily: 'Playfair-Bold',
-    textAlign: 'center',
+    fontFamily: "Playfair-Bold",
+    textAlign: "center",
     marginBottom: 10,
   },
   addHomeButton: {
@@ -158,8 +203,8 @@ const styles = StyleSheet.create({
   },
   addHomeButtonText: {
     fontSize: 18,
-    fontFamily: 'Playfair-Bold',
-    color: '#fff',
+    fontFamily: "Playfair-Bold",
+    color: "#fff",
   },
   headerContainer: {
     display: "flex",

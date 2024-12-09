@@ -45,7 +45,6 @@ export default function AccountCreationScreen() {
     if (
       !firstName ||
       !lastName ||
-      !preferredName ||
       !email ||
       !phone ||
       !dob ||
@@ -74,7 +73,6 @@ export default function AccountCreationScreen() {
         username: email,
         first_name: firstName,
         last_name: lastName,
-        preferred_name: preferredName,
         email,
         phone,
         date_of_birth: dob,

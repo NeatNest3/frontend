@@ -110,12 +110,12 @@ android {
     namespace 'com.neatnest.neatnest'
 
     defaultConfig {
-        applicationId 'com.neatnest.neatnest'
+        applicationId 'tech.neatnest'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
-        manifestPlaceholders = [auth0Domain:"@string/com_auth0_domain", auth0Scheme: "https"]
+        manifestPlaceholders = [auth0Domain:"@string/com_auth0_domain", auth0Scheme: "${applicationId}.auth0"]
     }
 
     signingConfigs {
