@@ -9,7 +9,6 @@ import {
 import React, { useEffect } from "react";
 import { Colors } from "./../../constants/Colors";
 import { useNavigation, useRouter } from "expo-router";
-import { users } from "./../../data";
 import axios from "axios";
 import { useGlobalParams } from "../../context/GlobalParamsContext";
 
@@ -26,7 +25,7 @@ export default function HousesList() {
   }, [navigation]);
 
   const { globalParams } = useGlobalParams();
-  const userId = globalParams?.user?.id; // Access the userId from globalParams
+  const userId = globalParams?.user?.id; 
 
   const [homes, setHomes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,11 +40,10 @@ export default function HousesList() {
 
     const fetchHomes = async () => {
       try {
-        // Fetch homes by userId from the backend
         const response = await axios.get(
-          `http://127.0.0.1:8000/home/?customer=${userId}`
+          `https://https-www-neatnest-tech.onrender.com/home/?customer=${userId}`
         );
-        setHomes(response.data); // Update the state with the fetched homes data
+        setHomes(response.data); 
       } catch (error) {
         setError("Error fetching homes");
         console.error(error);
@@ -55,7 +53,7 @@ export default function HousesList() {
     };
 
     fetchHomes();
-  }, [userId, navigation]); // Re-run this effect if userId or navigation changes
+  }, [userId, navigation]); 
 
   const handleNewHome = () => {
     router.push("./addhome");
@@ -90,11 +88,11 @@ export default function HousesList() {
   );
 
   if (loading) {
-    return <Text>Loading homes...</Text>; // Loading state
+    return <Text>Loading homes...</Text>; 
   }
 
   if (error) {
-    return <Text>{error}</Text>; // Display error if fetch fails
+    return <Text>{error}</Text>; 
   }
 
   return (

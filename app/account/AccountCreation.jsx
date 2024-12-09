@@ -11,7 +11,7 @@ import {
 import { useRouter } from "expo-router";
 import { Colors } from "../../constants/Colors";
 import { useNavigation } from "expo-router";
-import axios from "axios"; // Import axios to make HTTP requests
+import axios from "axios"; 
 import { CheckBox } from "react-native-elements";
 import { useGlobalParams } from "../../context/GlobalParamsContext";
 
@@ -22,11 +22,11 @@ export default function AccountCreationScreen() {
   const [preferredName, setPreferredName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [dob, setDob] = useState(""); // Date of Birth input
-  const [password, setPassword] = useState(""); // Password input
-  const [confirmPassword, setConfirmPassword] = useState(""); // Confirm Password
-  const [role, setRole] = useState(""); // Role selection
-  const [error, setError] = useState(""); // Error message state
+  const [dob, setDob] = useState(""); 
+  const [password, setPassword] = useState(""); 
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState(""); 
+  const [error, setError] = useState(""); 
   const router = useRouter();
   const navigation = useNavigation();
   const { setUser } = useGlobalParams();
@@ -78,10 +78,10 @@ export default function AccountCreationScreen() {
         date_of_birth: dob,
         password,
         role: role,
-        allergies: [], // Can be expanded later based on user input
+        allergies: [], 
       };
   
-      // Send user data to the Django backend to create the user
+
       const response = await axios.post(
         "https://https-www-neatnest-tech.onrender.com/user/",
         userData
@@ -90,10 +90,9 @@ export default function AccountCreationScreen() {
       setUser(response.data)
   
       console.log(response.data, "User Information");
-  
-      // Check the response from the backend
+
       if (response.status === 201) {
-        router.push("/home"); // Redirect to home after successful account creation
+        router.push("/home"); 
       }
     } catch (err) {
       console.error(err);
@@ -104,13 +103,12 @@ export default function AccountCreationScreen() {
     }
   };
 
-  // Handle input changes for Date of Birth (dob)
+
   const handleDobChange = (text) => {
-    // Allow only numbers and dash for the format YYYY-MM-DD
-    const formattedText = text.replace(/[^0-9\-]/g, ""); // Replace any non-numeric or non-dash character
+
+    const formattedText = text.replace(/[^0-9\-]/g, ""); 
     // Automatically format text to match YYYY-MM-DD as user types
     if (formattedText.length <= 10) {
-      // Only update state if the text doesn't exceed the required length (10 characters)
       setDob(formattedText);
     }
   };
@@ -130,7 +128,6 @@ export default function AccountCreationScreen() {
           account creation.
         </Text>
 
-        {/* Form Fields */}
         <TextInput
           style={styles.input}
           placeholder="First Name"
@@ -162,16 +159,14 @@ export default function AccountCreationScreen() {
           onChangeText={setPhone}
         />
 
-        {/* Date of Birth with format enforcement */}
         <TextInput
           style={styles.input}
           placeholder="Date of Birth (YYYY-MM-DD)"
           value={dob}
           onChangeText={handleDobChange}
-          maxLength={10} // Limit the input to 10 characters (YYYY-MM-DD format)
+          maxLength={10} 
         />
 
-        {/* Password Section */}
         <Text style={styles.passwordTitle}>Password</Text>
         <TextInput
           style={styles.input}
@@ -228,7 +223,6 @@ export default function AccountCreationScreen() {
           />
         </View>
 
-        {/* Error Message */}
         {error ? <Text style={styles.error}>{error}</Text> : null}
 
         <TouchableOpacity

@@ -1,14 +1,14 @@
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { useGlobalParams } from '../../context/GlobalParamsContext'; // Import the global context
+import { useGlobalParams } from '../../context/GlobalParamsContext'; 
 import axios from 'axios';
-import { Colors } from '../../constants/Colors'; // Assuming you have some colors defined
+import { Colors } from '../../constants/Colors'; 
 
 export default function AccountInfo() {
-  const { globalParams } = useGlobalParams(); // Get the global params
-  const [customerData, setCustomerData] = useState(null); // To hold customer data
-  const [loading, setLoading] = useState(true); // To handle loading state
-  const [error, setError] = useState(null); // To handle errors
+  const { globalParams } = useGlobalParams(); 
+  const [customerData, setCustomerData] = useState(null); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
 
   useEffect(() => {
     const fetchCustomerData = async () => {
@@ -42,7 +42,6 @@ export default function AccountInfo() {
   return (
     <View style={styles.container}>
       <View style={styles.profileHeader}>
-        {/* Display the profile image */}
         <Image
           source={{ uri: profile_pic || 'https://picsum.photos/200' }} // Use placeholder if no profile pic
           style={styles.profileImage}

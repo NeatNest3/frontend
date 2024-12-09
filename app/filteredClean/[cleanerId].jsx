@@ -28,14 +28,13 @@ export default function BookingClean() {
   const { date, time, rooms } = globalParams;
 
   const [cleaner, setCleaner] = useState(null);
-  const [section, setSection] = useState(1); // Section control for the ternary
-  const [taskData, setTaskData] = useState({}); // State for room task data
-  const [taskErrors, setTaskErrors] = useState({}); // Track errors for each room task
-
+  const [section, setSection] = useState(1); 
+  const [taskData, setTaskData] = useState({}); 
+  const [taskErrors, setTaskErrors] = useState({}); 
   const [modalVisible, setModalVisible] = useState(false);
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
-  const router = useRouter(); // Hook to navigate between screens
+  const router = useRouter(); 
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -61,7 +60,6 @@ export default function BookingClean() {
     return <Text>Cleaner not found!</Text>;
   }
 
-  // Handle the task input change
   const handleTaskChange = (room, field, value) => {
     setTaskData((prevData) => ({
       ...prevData,
@@ -72,7 +70,6 @@ export default function BookingClean() {
     }));
   };
 
-  // Validate the required fields
   const validateFields = () => {
     let errors = {};
     rooms.forEach((room) => {
@@ -84,19 +81,18 @@ export default function BookingClean() {
     return Object.keys(errors).length === 0;
   };
 
-  // Handle the confirm booking action
   const handleConfirmBooking = () => {
-    setModalVisible(true); // Show verification modal
+    setModalVisible(true); 
   };
 
-  // Handle booking confirmation and set timer to close modal and navigate
+ 
   const handleBookingConfirmed = () => {
     setBookingConfirmed(true);
-    setModalVisible(false); // Close the verification modal
+    setModalVisible(false); 
     setTimeout(() => {
-      setBookingConfirmed(false); // Reset the confirmed state
-      router.push("/home"); // Navigate to the home screen (or any other screen you prefer)
-    }, 2000); // Wait for 2 seconds before navigating
+      setBookingConfirmed(false); 
+      router.push("/home"); 
+    }, 2000); 
   };
 
   // Section 1: Confirmation Information
@@ -156,25 +152,22 @@ export default function BookingClean() {
               Sounds Good! Let's figure out what you need done!
             </Text>
 
-            {/* Loop through rooms and create the task form for each */}
             {rooms.map((room, index) => {
-              // Capitalize and replace underscores with spaces
               const formattedRoomName = room
-                .replace(/_/g, " ") // Replace underscores with spaces
-                .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
+                .replace(/_/g, " ") 
+                .replace(/\b\w/g, (char) => char.toUpperCase()); 
 
               return (
                 <View key={index} style={styles.roomTask}>
                   <Text style={styles.roomName}>{formattedRoomName}:</Text>
 
-                  {/* Task Name Input */}
                   <TextInput
                     style={[
                       styles.input,
                       taskErrors[room] && {
                         borderColor: "red",
                         borderWidth: 1,
-                      }, // Highlight with red border if error
+                      }, 
                     ]}
                     placeholder="Task (Required)"
                     placeholderTextColor={Colors.PRIM_DARK}
@@ -189,7 +182,6 @@ export default function BookingClean() {
                     EX: "Do dishes, Clean cabinets, Scrub Shower, etc."
                   </Text>
 
-                  {/* Task Description Input */}
                   <TextInput
                     style={styles.input}
                     placeholder="Task Specifics (Optional)"
@@ -205,11 +197,10 @@ export default function BookingClean() {
               );
             })}
 
-            {/* Confirm Tasks Button */}
             <TouchableOpacity
               onPress={() => {
                 if (validateFields()) {
-                  setSection(3); // Only move to next section if validation passes
+                  setSection(3); 
                 }
               }}
               style={styles.confirmButton}
@@ -241,7 +232,6 @@ export default function BookingClean() {
         </Text>
         <Text style={styles.detailText}>Time: {time || "Not selected"}</Text>
 
-        {/* Loop through rooms and show the task data */}
         {rooms.map((room, index) => {
           const formattedRoomName = room
             .replace(/_/g, " ")
@@ -262,7 +252,6 @@ export default function BookingClean() {
           );
         })}
 
-        {/* Confirm Booking Button */}
         <TouchableOpacity
           onPress={handleConfirmBooking}
           style={styles.confirmButton}
@@ -345,7 +334,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   scrollViewContent: {
-    paddingBottom: 30, // Add some padding at the bottom for scrolling
+    paddingBottom: 30, 
   },
   section: {
     marginBottom: 20,
@@ -474,7 +463,7 @@ const styles = StyleSheet.create({
     textAlign:'center'
   },
   buttonContainer: {
-    flexDirection: "row", // Align buttons side by side
+    flexDirection: "row", 
     justifyContent: "space-around",
     width: "50%",
   },

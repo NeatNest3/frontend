@@ -7,7 +7,6 @@ import axios from "axios";
 import {useAuth0} from 'react-native-auth0'
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
@@ -21,7 +20,7 @@ export default function LoginScreen() {
   
     try {
       // Use the custom redirect URI
-      const redirectUri = "neatnest://callback"; // Your custom scheme
+      const redirectUri = "neatnest://callback"; 
       const credentials = await authorize({ redirectUri });
       const userEmail = credentials.email;
       console.log("User Email:", userEmail);
@@ -37,7 +36,7 @@ export default function LoginScreen() {
         console.log("Email not found, redirecting to account creation.");
         router.push("./account/AccountCreation");
       } else {
-        // Handle other errors
+
         setError("Login failed. Please try again.");
         setLoading(false);
         console.log("Auth0 login error:", error);

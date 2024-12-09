@@ -22,29 +22,26 @@ export default function History() {
     });
   }, [navigation]);
 
-  // State to manage the modal visibility
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCleaner, setSelectedCleaner] = useState(null);
 
   const openContactModal = (cleaner) => {
-    setSelectedCleaner(cleaner); // Set the selected cleaner's details
-    setModalVisible(true); // Show the modal
+    setSelectedCleaner(cleaner); 
+    setModalVisible(true); 
   };
 
   const closeContactModal = () => {
-    setModalVisible(false); // Hide the modal
-    setSelectedCleaner(null); // Reset the selected cleaner
+    setModalVisible(false); 
+    setSelectedCleaner(null); 
   };
 
-  // Filter completed jobs
   const filteredCompletedJobs = activeClean.filter(
     (job) => job.status === "complete"
   );
 
-  // Render Completed Job Item
+
   const renderCompletedJobItem = ({ item }) => (
     <View style={styles.jobContainer}>
-      {/* Home Info with Circular House Image and Text Next to It */}
       <View style={styles.homeContainer}>
         <View style={styles.homeImageContainer}>
           <Image
@@ -60,10 +57,8 @@ export default function History() {
         </View>
       </View>
 
-      {/* Scheduled Date and Time */}
       <Text style={styles.jobText}>Completed on: {item.date} at {item.time}</Text>
 
-      {/* Rooms and Tasks */}
       {item.rooms.map((room, index) => (
         <View key={index} style={styles.roomContainer}>
           <Text style={styles.roomTitle}>{room.roomName}</Text>
@@ -75,7 +70,6 @@ export default function History() {
         </View>
       ))}
 
-      {/* Cleaner Info with Contact Button */}
       <View style={styles.cleanerContainer}>
         <Text style={styles.cleanerText}>
           Cleaner: {item.cleaner.first_name} {item.cleaner.last_name}
@@ -92,15 +86,13 @@ export default function History() {
 
   return (
     <View style={styles.container}>
-      {/* Completed Jobs List */}
       <FlatList
-        data={filteredCompletedJobs} // Using the filtered completed jobs
+        data={filteredCompletedJobs} 
         renderItem={renderCompletedJobItem}
         keyExtractor={(item) => item.id.toString()}
         style={styles.jobList}
       />
 
-      {/* Modal for Contacting Cleaner */}
       {selectedCleaner && (
         <Modal
           visible={modalVisible}

@@ -39,7 +39,6 @@ export default function HomeCreationScreen() {
   }, [navigation]);
 
   const handleHomeCreation = async () => {
-    // Check if all fields are filled out
     if (!homeName || !addressLineOne || !city || !state || !zipcode) {
       setError("Please fill in all fields.");
       return;
@@ -54,20 +53,19 @@ export default function HomeCreationScreen() {
         zipcode,
         kids: children, 
         pets, 
-        customer: userId, // Send the customer ID (userId) with the home data
+        customer: userId,
       };
 
-      // Send home data to the backend (Django or other)
+
       const response = await axios.post(
-        "http://192.168.1.15:8000/home/", // Adjust the URL to your backend
+        "http://192.168.1.15:8000/home/",
         homeData
       );
 
       console.log(response.data, "Home creation response");
 
-      // Check the response from the backend
       if (response.status === 201) {
-        router.push("/home"); // Redirect to home after successful home creation
+        router.push("/home"); 
       }
     } catch (err) {
       console.error(err);
@@ -146,7 +144,6 @@ export default function HomeCreationScreen() {
           />
         </View>
 
-        {/* Error Message */}
         {error ? <Text style={styles.error}>{error}</Text> : null}
 
         <TouchableOpacity
@@ -190,11 +187,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   checkboxContainer: {
-    marginBottom: 20, // Space before the checkbox
+    marginBottom: 20, 
   },
   checkbox: {
-    backgroundColor: "transparent", // Make checkbox container background transparent
-    marginBottom: 10, // Add some space between the checkbox and the button
+    backgroundColor: "transparent", 
+    marginBottom: 10, 
   },
   icon: {
     width: 50,

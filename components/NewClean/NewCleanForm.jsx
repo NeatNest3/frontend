@@ -32,21 +32,18 @@ const NewCleanForm = () => {
   const router = useRouter();
   const { updateGlobalParams } = useGlobalParams();
 
-  // Handle Date Change: Trigger Time Picker when a date is selected
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    setShowTimePicker(true);  // Show time picker after selecting a date
+    setShowTimePicker(true);  
   };
 
-  // Handle Time Change: Update selected time and hide the picker
   const handleTimeChange = (event, date) => {
     if (event.type === 'set' && date) {
       setSelectedTime(date);
     }
-    setShowTimePicker(false); // Hide the time picker after selection
+    setShowTimePicker(false); 
   };
 
-  // Handle Room Selection Toggle
   const handleRoomToggle = (roomId) => {
     setSelectedRooms((prevSelectedRooms) =>
       prevSelectedRooms.includes(roomId)
@@ -66,7 +63,6 @@ const NewCleanForm = () => {
   };
 
   useEffect(() => {
-    // Automatically hide time picker after date/time are both selected
     if (selectedDate && selectedTime) {
       setShowTimePicker(false);
     }

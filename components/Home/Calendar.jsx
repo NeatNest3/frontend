@@ -13,7 +13,7 @@ export default function HomeCalendar() {
     const newMarkedDates = {};
 
     activeClean.forEach((job) => {
-      const formattedDate = `2024-${job.date.replace("-", "-")}`; // Format date as yyyy-mm-dd
+      const formattedDate = `2024-${job.date.replace("-", "-")}`; 
 
       if (job.status === "active" || job.status === "in progress" || job.status === "complete") {
         newMarkedDates[formattedDate] = {
